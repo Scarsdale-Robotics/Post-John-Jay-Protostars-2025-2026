@@ -33,7 +33,7 @@ public class Vec3 {
     }
 
     public void rot(double a) {
-        set();
+        set(a);
     }
 
 
