@@ -3,10 +3,11 @@ package org.firstinspires.ftc.teamcode.Auton;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.LocalizationSubsystem;
 
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.components.SubsystemComponent;
-//import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 import dev.nextftc.hardware.driving.Drivetrain;
@@ -34,8 +35,17 @@ public class Auto extends NextFTCOpMode {
     private final MotorEx backRightMotor = new MotorEx("backRight");
     private final IMUEx imu = new IMUEx("imu", Direction.UP, Direction.FORWARD).zeroed();
 
+    //*
+    private void driveTo(double x, double y, double heading) {
+
+        DriveSubsystem.driveToNewPosition(LocalizationSubsystem.x, LocalizationSubsystem.y, x, y, heading);
+    }
+     //*/
+
     @Override
     public void onStartButtonPressed() {
+
+        driveTo(0, 0, 0);
 
 
     }
