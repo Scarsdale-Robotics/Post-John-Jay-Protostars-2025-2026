@@ -10,7 +10,7 @@ import dev.nextftc.core.subsystems.Subsystem;
 public class LocalizationSubsystem implements Subsystem {
     public static LocalizationSubsystem INSTANCE = new LocalizationSubsystem();
 
-    public double timer;
+    public static double timer;
     public double xVel;
     public double yVel;
     public double zVel;
@@ -26,7 +26,7 @@ public class LocalizationSubsystem implements Subsystem {
             yPos = 0;
             zPos = 0;
 
-        timer=0;
+        timer = 0;
 
 
     }
