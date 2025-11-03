@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.LocalizationSubsystem;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
@@ -37,10 +38,14 @@ public class Auto extends NextFTCOpMode {
 
     //*
     private void driveTo(double x, double y, double heading) {
-
         DriveSubsystem.driveToNewPosition(LocalizationSubsystem.x, LocalizationSubsystem.y, x, y, heading);
     }
      //*/
+    private Command autoRoutine() {
+        return new SequentialGroup(
+
+        );
+    }
 
     @Override
     public void onStartButtonPressed() {
