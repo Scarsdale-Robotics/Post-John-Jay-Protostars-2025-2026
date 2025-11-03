@@ -1,38 +1,28 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
-
-import org.opencv.core.Point;
-import org.opencv.core.Point3;
-
+import static org.firstinspires.ftc.teamcode.Vec3.ZERO;
+import org.firstinspires.ftc.teamcode.Vec3;
 import dev.nextftc.core.subsystems.Subsystem;
 
 
-
 public class LocalizationSubsystem implements Subsystem {
-    public static LocalizationSubsystem INSTANCE=new LocalizationSubsystem();
+    public static LocalizationSubsystem robot=new LocalizationSubsystem();
+
+    public Vec3 pos=ZERO.clone();
+    public Vec3 vel=pos.clone();
+    public double lastUpdate=0;
+    private Vec3 lastPos=vel.clone();
+    public double dir=0;
 
 
+    public void updPos(double x, double y, double z) {
+        lastPos.set(pos);
+        pos.set(x, y, z);
+        //vel.set(pos.sub(lastPos).div(/*time-lastUpdate*/));
+    }
 
-
-    public double timer;
-    public double xVel;
-    public double yVel;
-    public double zVel;
-
-
-
-    public void update(double xPos, double yPos, double zPos) {
-//        xVel=(xPos-x)*timer;
-//        yVel=(yPos-y)*timer;
-//        zVel=(zPos-z)*timer;
-//        P point = new Point(xPos, yPos);
-
-
-//        x=xPos;
-//        y=yPos;
-//        z=zPos;
-
-        timer=0;
-
+    public void updPos(Vec3 v) {
+        updPos(v.x, v.y, v.z);
+    }
 
     }
 

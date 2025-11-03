@@ -6,6 +6,7 @@ public class Vec3 {
     public double z;
 
     public static final Vec3 ZERO = new Vec3(0, 0, 0);
+    public static Vec3 temp;
 
     public Vec3(double X, double Y, double Z) {
         x=X;
@@ -13,11 +14,19 @@ public class Vec3 {
         z=Z;
     }
 
+    public Vec3(Vec3 v) {
+
+        x = v.x;
+        y = v.y;
+        z = v.z;
+    }
+
     public Vec3 clone() {
         return new Vec3(x, y, z);
     }
 
     public double mag() {
+        if ((x==0)&&(y==0)&&(z==0)) return 0;
         return Math.hypot(Math.hypot(x, y), z);
     }
 
@@ -53,15 +62,27 @@ public class Vec3 {
         return this;
     }
 
-    public Vec3 rotYZ(double ay, double az) {
-        rotY(ay);
+    public Vec3 rotZY(double az, double ay) {
         rotZ(az);
+        rotY(ay);
         return  this;
     }
-    public Vec3 rot(double ax, double ay, double az) {
+    public Vec3 rotXYZ(double ax, double ay, double az) {
         rotX(ax);
         rotY(ay);
         rotZ(az);
+        return this;
+    }
+    public Vec3 rotEuler(double ax, double ay, double az) {
+        rotX(az);
+        rotZ(ax);
+        rotY(ay);
+        return this;
+    }
+
+
+    public Vec3 rotEuler(Vec3 v) {
+        rotEuler(v.x, v.y, v.z);
         return this;
     }
 
@@ -79,19 +100,45 @@ public class Vec3 {
         return Math.atan2(y,x);
     }
 
+    public double angZto(Vec3 a) {
+        return Math.atan2(a.y - y, a.x - x);
+    }
+
     public double angXZ() {
         return Math.atan2(z, Math.hypot(x, y));
     }
 
-    public Vec3 anglize() {
+    public Vec3 anglizeXYZ() {
         set(angX(), angY(), angZ());
         return this;
     }
-
-    public Vec3 ang() {
-        return clone().anglize();
+    public Vec3 anglizeEuler() {
+        set(angZ(), angXZ(), angX());
+        return this;
     }
 
+
+
+    public Vec3 angXYZ() {
+        return clone().anglizeXYZ();
+    }
+    public Vec3 angEuler() {
+        return clone().anglizeEuler();
+    }
+
+
+    public Vec3 toLocal(Vec3 v) {
+        x-=v.x;
+        y-=v.y;
+        z-=v.z;
+        return this;
+    }
+
+    public Vec3 toLocal(Vec3 v, Vec3 angleEuler) {
+        toLocal(v);
+        rotEuler(angleEuler);
+        return this;
+    }
 
 
     public Vec3 add(Vec3 v) {
