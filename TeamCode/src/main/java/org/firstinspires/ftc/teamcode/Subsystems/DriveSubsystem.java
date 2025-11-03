@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import dev.nextftc.control.ControlSystem;
+import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.impl.MotorEx;
 
-//TESTING GIT STUFF
 public class DriveSubsystem implements Subsystem {
     public static final DriveSubsystem INSTANCE = new DriveSubsystem();
 
@@ -19,4 +19,28 @@ public class DriveSubsystem implements Subsystem {
             .posPid(0,0,0) // figure out what this is
             .build();
 
+    @Override
+    public void periodic() {
+
+
+
+    }
+
+    public class driveRobotCentric extends Command{
+        public driveRobotCentric(double x, double y, double h){
+            frontLeftMotor.setPower(y + x + h);
+            frontRightMotor.setPower(y - x - h);
+            backLeftMotor.setPower(y - x + h);
+            backRightMotor.setPower(y + x - h);
+        }
+
+        @Override
+        public boolean isDone() {
+            return false;
+        }
+    }
+
 }
+
+//drive robot centric DONE
+//drive to position
