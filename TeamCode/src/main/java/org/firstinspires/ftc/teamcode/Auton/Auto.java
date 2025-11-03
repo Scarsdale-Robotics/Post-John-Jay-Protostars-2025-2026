@@ -36,11 +36,7 @@ public class Auto extends NextFTCOpMode {
     private final MotorEx backRightMotor = new MotorEx("backRight");
     private final IMUEx imu = new IMUEx("imu", Direction.UP, Direction.FORWARD).zeroed();
 
-    //*
-    private void driveTo(double x, double y, double heading) {
-        DriveSubsystem.driveToNewPosition(LocalizationSubsystem.x, LocalizationSubsystem.y, x, y, heading);
-    }
-     //*/
+
     private Command autoRoutine() {
         return new SequentialGroup(
 
@@ -49,8 +45,6 @@ public class Auto extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed() {
-
-        driveTo(0, 0, 0);
 
 
     }
