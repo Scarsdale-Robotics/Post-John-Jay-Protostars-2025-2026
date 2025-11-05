@@ -74,9 +74,9 @@ public class Vec3 {
         return this;
     }
     public Vec3 rotEuler(double ax, double ay, double az) {
-        rotX(az);
         rotZ(ax);
         rotY(ay);
+        rotX(az);
         return this;
     }
 
@@ -127,15 +127,15 @@ public class Vec3 {
     }
 
 
-    public Vec3 toLocal(Vec3 v) {
-        x-=v.x;
-        y-=v.y;
-        z-=v.z;
+    public Vec3 toLocal(Vec3 v, Vec3 angleEuler) {
+        sub(v);
+        angleEuler.mult(-1);
+        rotEuler(angleEuler);
+        angleEuler.mult(-1);
         return this;
     }
-
-    public Vec3 toLocal(Vec3 v, Vec3 angleEuler) {
-        toLocal(v);
+    public Vec3 toGlobal(Vec3 v, Vec3 angleEuler) {
+        add(v);
         rotEuler(angleEuler);
         return this;
     }
