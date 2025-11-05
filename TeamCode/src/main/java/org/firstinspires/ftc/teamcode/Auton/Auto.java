@@ -39,14 +39,14 @@ public class Auto extends NextFTCOpMode {
 
     private Command autoRoutine() {
         return new SequentialGroup(
-
+            DriveSubsystem.INSTANCE.driveRobotCentric(1,1,1),
+            DriveSubsystem.INSTANCE.brake
         );
     }
 
     @Override
     public void onStartButtonPressed() {
-
-
+        autoRoutine().schedule();
     }
 
 }

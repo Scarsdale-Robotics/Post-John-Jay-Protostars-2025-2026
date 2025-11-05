@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.MotorGroup;
 import dev.nextftc.hardware.impl.MotorEx;
@@ -29,19 +30,15 @@ public class DriveSubsystem implements Subsystem {
     //i forgor
     }
 
-    public class driveRobotCentric extends Command{
-        public driveRobotCentric(double x, double y, double h){
+    public Command driveRobotCentric(double x, double y, double h) {
+        return new InstantCommand(() -> {
             frontLeftMotor.setPower(y + x + h);
             frontRightMotor.setPower(y - x - h);
             backLeftMotor.setPower(y - x + h);
             backRightMotor.setPower(y + x - h);
-        }
-
-        @Override
-        public boolean isDone() {
-            return false;
-        }
+        });
     }
+
     public Command brake = new SetPower(allWheels, 0);
 
 }
