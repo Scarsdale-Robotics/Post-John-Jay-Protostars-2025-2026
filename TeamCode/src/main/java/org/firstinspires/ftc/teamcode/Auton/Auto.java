@@ -27,6 +27,7 @@ public class Auto extends NextFTCOpMode {
     public Auto() {
         addComponents(
                 new SubsystemComponent(ShooterSubsystem.INSTANCE),
+                new SubsystemComponent(LocalizationSubsystem.INSTANCE),
                 BulkReadComponent.INSTANCE
         );
     }
@@ -40,7 +41,8 @@ public class Auto extends NextFTCOpMode {
     private Command autoRoutine() {
         return new SequentialGroup(
             DriveSubsystem.INSTANCE.driveRobotCentric(1,1,1),
-            DriveSubsystem.INSTANCE.brake
+            DriveSubsystem.INSTANCE.brake,
+            LocalizationSubsystem.INSTANCE.setOdom(1,1,1)
         );
     }
 
