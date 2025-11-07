@@ -6,7 +6,6 @@ public class Vec3 {
     public double z;
 
     public static final Vec3 ZERO = new Vec3(0, 0, 0);
-    public static Vec3 temp;
 
     public Vec3(double X, double Y, double Z) {
         x=X;
@@ -74,9 +73,9 @@ public class Vec3 {
         return this;
     }
     public Vec3 rotEuler(double ax, double ay, double az) {
+        rotY(ay);
         rotX(az);
         rotZ(ax);
-        rotY(ay);
         return this;
     }
 
@@ -126,16 +125,15 @@ public class Vec3 {
         return clone().anglizeEuler();
     }
 
-
-    public Vec3 toLocal(Vec3 v) {
-        x-=v.x;
-        y-=v.y;
-        z-=v.z;
+    public Vec3 toLocal(Vec3 v, Vec3 angleEuler) {
+        sub(v);
+        angleEuler.mult(-1);
+        rotEuler(angleEuler);
+        angleEuler.mult(-1);
         return this;
     }
-
-    public Vec3 toLocal(Vec3 v, Vec3 angleEuler) {
-        toLocal(v);
+    public Vec3 toGlobal(Vec3 v, Vec3 angleEuler) {
+        add(v);
         rotEuler(angleEuler);
         return this;
     }

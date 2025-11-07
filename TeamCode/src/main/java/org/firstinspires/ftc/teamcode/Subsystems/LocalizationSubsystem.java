@@ -21,6 +21,11 @@ public class LocalizationSubsystem implements Subsystem {
     public  static GoBildaPinpointDriver pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "Pinpoint");
 
 
+    @Override
+    public void periodic(){
+        upd();
+    }
+
 
     public static Vec3 pos=ZERO.clone();
     public static Vec3 vel=ZERO.clone();
@@ -66,7 +71,6 @@ public class LocalizationSubsystem implements Subsystem {
         pose2D =pinpoint.getPosition();
         updPos(pose2D.getX(DistanceUnit.MM), pose2D.getY(DistanceUnit.MM),0.);
         updDir(pose2D.getHeading(AngleUnit.RADIANS),0.,0.);
-
     }
 
     public static void set() {
@@ -86,19 +90,36 @@ public class LocalizationSubsystem implements Subsystem {
         });
     }
 
-    public Vec3 tolocPos(Vec3 v) {
-        v.toLocal(pos);
+    public Vec3 toLocalPos(Vec3 v) {
+        v.sub(pos);
         return v;
     }
+
     public Vec3 toGlobalPos(Vec3 v) {
-        v.toLocal(pos);
+        v.add(pos);
         return v;
     }
 
 
-    public Vec3 toLoc(Vec3 v) {
-        v.toLocal(pos, dir);
+    public Vec3 toLocalAngle(Vec3 v) {
+        dir.mult(-1);
+        v.rotEuler(dir);
+        dir.mult(-1);
         return v;
     }
+    public Vec3 toGlobalAngle(Vec3 v) {
+        v.rotEuler(dir);
+        return v;
+    }
+
+
+    public Vec3 toLocal(Vec3 v) {
+        return toLocalAngle(tolocalPos(v));
+    }
+    public Vec3 toGlobal(Vec3 v) {
+        return toLocalPos(toLocalAngle(v));
+    }
+
+
 }
 
