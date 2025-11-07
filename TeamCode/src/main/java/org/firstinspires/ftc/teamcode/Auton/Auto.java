@@ -38,7 +38,7 @@ public class Auto extends NextFTCOpMode {
         return new SequentialGroup(
                 //an auto of all time
             LocalizationSubsystem.INSTANCE.setOdom(0,0,0),
-            DriveSubsystem.INSTANCE.driveRobotCentric(1,1,Math.toRadians(20)),
+            DriveSubsystem.INSTANCE.driveRobotCentric(0,1,Math.toRadians(20)),
             new Delay(0.5),
             DriveSubsystem.INSTANCE.brake,
             ShooterSubsystem.INSTANCE.shooterOn(50),
