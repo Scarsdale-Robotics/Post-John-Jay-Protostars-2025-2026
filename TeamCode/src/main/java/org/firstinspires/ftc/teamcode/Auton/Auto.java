@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.LocalizationSubsystem;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
@@ -31,18 +32,18 @@ public class Auto extends NextFTCOpMode {
                 BulkReadComponent.INSTANCE
         );
     }
-    private final MotorEx frontLeftMotor = new MotorEx("frontLeft").reversed();
-    private final MotorEx frontRightMotor = new MotorEx("frontRight");
-    private final MotorEx backLeftMotor = new MotorEx("backLeft").reversed();
-    private final MotorEx backRightMotor = new MotorEx("backRight");
-    private final IMUEx imu = new IMUEx("imu", Direction.UP, Direction.FORWARD).zeroed();
 
 
     private Command autoRoutine() {
         return new SequentialGroup(
-            DriveSubsystem.INSTANCE.driveRobotCentric(1,1,1),
+                //an auto of all time
+            LocalizationSubsystem.INSTANCE.setOdom(0,0,0),
+            DriveSubsystem.INSTANCE.driveRobotCentric(1,1,Math.toRadians(20)),
+            new Delay(0.5),
             DriveSubsystem.INSTANCE.brake,
-            LocalizationSubsystem.INSTANCE.setOdom(1,1,1)
+            ShooterSubsystem.INSTANCE.shooterOn(50),
+            new Delay(1),
+            ShooterSubsystem.INSTANCE.shooterOff
         );
     }
 

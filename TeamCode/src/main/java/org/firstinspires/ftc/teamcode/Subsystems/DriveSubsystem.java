@@ -5,6 +5,8 @@ import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.MotorGroup;
+import dev.nextftc.hardware.impl.Direction;
+import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
 import dev.nextftc.hardware.powerable.SetPower;
 
@@ -13,10 +15,11 @@ public class DriveSubsystem implements Subsystem {
 
     private DriveSubsystem() { }
 
-    private MotorEx frontLeftMotor = new MotorEx("frontLeftMotor");
-    private MotorEx frontRightMotor = new MotorEx("frontRightMotor");
-    private MotorEx backLeftMotor = new MotorEx("backLeftMotor");
-    private MotorEx backRightMotor = new MotorEx("backRightMotor");
+      private final MotorEx frontLeftMotor = new MotorEx("frontLeft").reversed();
+      private final MotorEx frontRightMotor = new MotorEx("frontRight");
+      private final MotorEx backLeftMotor = new MotorEx("backLeft").reversed();
+      private final MotorEx backRightMotor = new MotorEx("backRight");
+      private final IMUEx imu = new IMUEx("imu", Direction.UP, Direction.FORWARD).zeroed();
 
     private MotorGroup allWheels = new MotorGroup(frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor);
 
