@@ -114,7 +114,7 @@ public class LocalizationSubsystem implements Subsystem {
 
 
     public Vec3 toLocal(Vec3 v) {
-        return toLocalAngle(tolocalPos(v));
+        return toLocalAngle(toLocalPos(v));
     }
     public Vec3 toGlobal(Vec3 v) {
         return toLocalPos(toLocalAngle(v));
