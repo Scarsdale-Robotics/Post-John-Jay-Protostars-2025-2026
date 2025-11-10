@@ -7,7 +7,10 @@ import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.teamcode.Vec3;
+
+import java.util.ArrayList;
 
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.utility.InstantCommand;
@@ -15,29 +18,52 @@ import dev.nextftc.core.subsystems.Subsystem;
 
 
 public class LocalizationSubsystem implements Subsystem {
-    //public static LocalizationSubsystem robot=new LocalizationSubsystem();
-    public static final LocalizationSubsystem INSTANCE = new LocalizationSubsystem();
+    public static LocalizationSubsystem INSTANCE=new LocalizationSubsystem();
 
     public  static GoBildaPinpointDriver pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "Pinpoint");
 
+    public LocalizationSubsystem(){
+        pos = new Vec3(0,0,0);
+        vel = new Vec3(0,0,0);
+        lastPosUpd=System.currentTimeMillis();
+        lastDirUpd=System.currentTimeMillis();
+        lastPos=new Vec3();
+        dir=new Vec3();
+        lastDir=new Vec3();
+        turnVelVec=new Vec3();
+    }
 
     @Override
     public void periodic(){
         upd();
     }
 
+    Vec3 pos;
+    Vec3 vel;
+    long lastPosUpd;
+    long lastDirUpd;
+     Vec3 lastPos;
+    Vec3 dir;
+    Vec3 lastDir;
+    Vec3 turnVelVec;
+     Pose2D pose2D;
 
-    public static Vec3 pos=ZERO.clone();
-    public static Vec3 vel=ZERO.clone();
-    public static long lastPosUpd=System.currentTimeMillis();
-    public static long lastDirUpd=System.currentTimeMillis();
-    private static Vec3 lastPos=ZERO.clone();
-    public static Vec3 dir=ZERO.clone();
-    public static Vec3 lastDir=ZERO.clone();
-    public Vec3 turnVelVec=ZERO.clone();
-    public static Pose2D pose2D;
+    public Pose2D getPose2D() {
+        return new Pose2D(DistanceUnit.INCH,pos.x, pos.y, AngleUnit.RADIANS, dir.x);
+    }
+    public double getX(){
+        return pos.x;
+    }
+    public double getY(){
+        return pos.y;
+    }
+    public double getH(){
+        return dir.x;
+    }
 
-    public static void updPos(double X, double Y, double Z) {
+
+
+    public void updPos(double X, double Y, double Z) {
         lastPos.set(pos);
         pos.set(X, Y, Z);
         long time=(System.currentTimeMillis() - lastPosUpd)/1000;
@@ -52,7 +78,7 @@ public class LocalizationSubsystem implements Subsystem {
         updPos(newPos.x, newPos.y, newPos.z);
     }
 
-    public static void updDir(double X, double Y, double Z) {
+    public void updDir(double X, double Y, double Z) {
         lastDir.set(dir);
         pos.set(X,Y,Z);
         long time=(System.currentTimeMillis() - lastPosUpd)/1000;
@@ -67,13 +93,13 @@ public class LocalizationSubsystem implements Subsystem {
         updDir(newDir.x, newDir.y, newDir.z);
     }
 
-    public static void upd() {
+    public void upd() {
         pose2D =pinpoint.getPosition();
-        updPos(pose2D.getX(DistanceUnit.MM), pose2D.getY(DistanceUnit.MM),0.);
+        updPos(pose2D.getX(DistanceUnit.INCH), pose2D.getY(DistanceUnit.INCH),0.);
         updDir(pose2D.getHeading(AngleUnit.RADIANS),0.,0.);
     }
 
-    public static void set() {
+    public void set() {
         lastPosUpd=System.currentTimeMillis();
         lastDirUpd=System.currentTimeMillis();
         upd();
@@ -82,9 +108,9 @@ public class LocalizationSubsystem implements Subsystem {
 
     public Command setOdom(double startX, double startY, double startDir) {
         return new InstantCommand(() -> {
-            pinpoint.setPosition(new Pose2D(DistanceUnit.MM, 0, 0, AngleUnit.RADIANS, startDir));
+            pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.RADIANS, startDir));
             pinpoint.resetPosAndIMU();
-            pinpoint.setOffsets(startX, startY, DistanceUnit.MM);
+            pinpoint.setOffsets(startX, startY, DistanceUnit.INCH);
             pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
             set();
         });
