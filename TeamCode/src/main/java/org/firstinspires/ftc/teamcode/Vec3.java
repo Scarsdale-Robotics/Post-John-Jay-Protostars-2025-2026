@@ -12,6 +12,11 @@ public class Vec3 {
         y=Y;
         z=Z;
     }
+    public Vec3(){
+        x=0;
+        y=0;
+        z=0;
+    }
 
     public Vec3(Vec3 v) {
 

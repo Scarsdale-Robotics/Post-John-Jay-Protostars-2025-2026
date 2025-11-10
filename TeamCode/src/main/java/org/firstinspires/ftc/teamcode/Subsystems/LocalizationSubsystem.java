@@ -7,32 +7,59 @@ import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.teamcode.Vec3;
+
+import java.util.ArrayList;
 
 import dev.nextftc.core.subsystems.Subsystem;
 
 
 public class LocalizationSubsystem implements Subsystem {
-    public static LocalizationSubsystem robot=new LocalizationSubsystem();
+    public static LocalizationSubsystem INSTANCE=new LocalizationSubsystem();
 
     public  static GoBildaPinpointDriver pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "Pinpoint");
 
+    public LocalizationSubsystem(){
+        pos = new Vec3(0,0,0);
+        vel = new Vec3(0,0,0);
+        lastPosUpd=System.currentTimeMillis();
+        lastDirUpd=System.currentTimeMillis();
+        lastPos=new Vec3();
+        dir=new Vec3();
+        lastDir=new Vec3();
+        turnVelVec=new Vec3();
+    }
 
     @Override
     public void periodic(){
         upd();
     }
 
+    Vec3 pos;
+    Vec3 vel;
+    long lastPosUpd;
+    long lastDirUpd;
+     Vec3 lastPos;
+    Vec3 dir;
+    Vec3 lastDir;
+    Vec3 turnVelVec;
+     Pose2D pose2D;
 
-    public Vec3 pos=ZERO.clone();
-    public Vec3 vel=ZERO.clone();
-    public long lastPosUpd=System.currentTimeMillis();
-    public long lastDirUpd=System.currentTimeMillis();
-    private Vec3 lastPos=ZERO.clone();
-    public Vec3 dir=ZERO.clone();
-    public Vec3 lastDir=ZERO.clone();
-    public Vec3 turnVelVec=ZERO.clone();
-    public Pose2D pose2D;
+    public Pose2D getPose2D() {
+        return new Pose2D(DistanceUnit.MM,pos.x, pos.y, AngleUnit.RADIANS, dir.x);
+    }
+    public double getX(){
+        return pos.x;
+    }
+    public double getY(){
+        return pos.y;
+    }
+    public double getH(){
+        return dir.x;
+    }
+
+
 
     public void updPos(double X, double Y, double Z) {
         lastPos.set(pos);
@@ -109,7 +136,7 @@ public class LocalizationSubsystem implements Subsystem {
 
 
     public Vec3 toLocal(Vec3 v) {
-        return toLocalAngle(tolocalPos(v));
+        return toLocalAngle(toLocalPos(v));
     }
     public Vec3 toGlobal(Vec3 v) {
         return toLocalPos(toLocalAngle(v));

@@ -66,16 +66,11 @@ public class wheels {
 
 
     public void setTurn(double turn) {//positive should be counter clockwise
-        int most = 0;
         for (int i=0; i<4; i++) {
             wTurn[i]=turn*wPos[i].y;
             wTurn[i]+=turn*wPos[i].x*side; // MAKE THIS SUBTRACT IF:   ROBOT DOESNT TURN AND JUST BREAKS
-            if (Math.abs(wTurn[i])>Math.abs(wTurn[most]))
-                most =i;
         }
-        if (Math.abs(wTurn[most])>1.)
-            for (int i=0; i<4; i++)
-                wTurn[i]/= Math.abs(wTurn[most]);
+        reduce(wTurn);
     }
 
     public void setForce() {
