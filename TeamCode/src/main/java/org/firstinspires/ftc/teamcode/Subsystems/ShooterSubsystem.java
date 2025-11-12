@@ -34,15 +34,17 @@ public class ShooterSubsystem implements Subsystem {
             public shooterOn(double powerParameter){  //If parameters required, create a subclass to the method
                 this.power = powerParameter;
             }
-            public void start(){
+            public void start(){ //start method
                 shooterGroup.setPower(power);//.requires(this);
             }
             @Override
             public boolean isDone() {
-                return true; //set the command to true, cuz we want to set the power instantly when call the command
+                return true; //close the command after setting the power instantly when call the command
             }
         }
+
         //single Command needed if no parameter input
         public Command shooterOff = new SetPower(shooterGroup, 0).requires(this);
+
 
 }
