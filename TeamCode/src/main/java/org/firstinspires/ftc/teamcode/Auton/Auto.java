@@ -38,7 +38,7 @@ public class Auto extends NextFTCOpMode {
     }
 
 
-    public Command driveToPos(double spX, double spY, double h) {
+    public Command driveToPosRoboCentric(double spX, double spY, double h) {
 
         double posX = LocalizationSubsystem.INSTANCE.getX();
         double posY = LocalizationSubsystem.INSTANCE.getY();
@@ -53,14 +53,14 @@ public class Auto extends NextFTCOpMode {
         double strafe = u_t*Math.sin(angle);
         double forward = u_t*Math.cos(angle);
 
-        DriveSubsystem.INSTANCE.driveRobotCentric(strafe, forward, h);
+        return DriveSubsystem.INSTANCE.driveRobotCentric(strafe, forward, h);
 
     }
     private Command autoRoutine() {
         return new SequentialGroup(
                 //an auto of all time
             LocalizationSubsystem.INSTANCE.setOdom(0,0,0),
-            driveToPos(5,4,0),
+            driveToPosRoboCentric(5,4,0),
             DriveSubsystem.INSTANCE.brake,
             ShooterSubsystem.INSTANCE.shooterOn(50),
             new Delay(1),
