@@ -2,14 +2,17 @@ package org.firstinspires.ftc.teamcode.Auton;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.LocalizationSubsystem;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.CommandManager;
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.SubsystemComponent;
+import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 import dev.nextftc.hardware.driving.Drivetrain;
@@ -31,9 +34,24 @@ public class Auto extends NextFTCOpMode {
                 new SubsystemComponent(LocalizationSubsystem.INSTANCE),
                 BulkReadComponent.INSTANCE
         );
+
     }
 
+    public void driveToPos(double spX, double spY, double h) {
 
+        double distance = Math.sqrt((spX - pos.x) ^ 2 + (spY - pos.y) ^ 2);
+
+
+        double kP = 0.01;
+        double u_t = kP * distance;
+
+        double angle = Math.atan2(spX, spY);
+        double strafe = u_t*Math.sin(angle);
+        double forward = u_t*Math.cos(angle);
+
+        DriveSubsystem.INSTANCE.driveRobotCentric(strafe, forward, h);
+
+    }
     private Command autoRoutine() {
         return new SequentialGroup(
                 //an auto of all time
