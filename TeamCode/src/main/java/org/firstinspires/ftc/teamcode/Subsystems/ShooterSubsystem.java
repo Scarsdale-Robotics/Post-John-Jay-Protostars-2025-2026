@@ -25,8 +25,6 @@ public class ShooterSubsystem implements Subsystem {
         @Override
         public void periodic() {
             shooterGroup.setPower(controlSystem.calculate(motor1.getState()));
-            //motor1.setPower(controlSystem.calculate(motor1.getState()));
-            //motor2.setPower(controlSystem.calculate(motor2.getState()));
         }
 
         public class shooterOn extends Command{
