@@ -37,9 +37,13 @@ public class Auto extends NextFTCOpMode {
 
     }
 
+
     public void driveToPos(double spX, double spY, double h) {
 
-        double distance = Math.sqrt((spX - pos.x) ^ 2 + (spY - pos.y) ^ 2);
+        double posX = LocalizationSubsystem.INSTANCE.getX();
+        double posY = LocalizationSubsystem.INSTANCE.getY();
+
+        double distance = Math.sqrt((spX - posX)*(spX - posX) + (spY - posY)*(spY - posY));
 
 
         double kP = 0.01;
