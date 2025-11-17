@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Auton;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
@@ -37,23 +38,45 @@ public class Auto extends NextFTCOpMode {
 
     }
 
-
+    public double[] previousError = {-1000000, -1000000, -1000000, 1000000};
     public Command driveToPosRoboCentric(double spX, double spY, double h) {
 
         double posX = LocalizationSubsystem.INSTANCE.getX();
         double posY = LocalizationSubsystem.INSTANCE.getY();
 
-        double distance = Math.sqrt((spX - posX)*(spX - posX) + (spY - posY)*(spY - posY));
+        double error = Math.sqrt((spX - posX)*(spX - posX) + (spY - posY)*(spY - posY)); //get distance from target point
 
-
+        //tune these when robot exist
         double kP = 0.01;
-        double u_t = kP * distance;
+        double kD = 0.001;
+
+        if (previousError[3] == -100000000) {
+            for (int i = 0; i < 4; i++){
+                previousError[i] = error;
+            }
+        }
+
+        ElapsedTime runtime = new ElapsedTime(0);
+        double deltaTime = runtime.seconds();
+
+        double derivative = (-error+8*previousError[0]-8*error*previousError[1]+previousError[2])/12*deltaTime;
+
+
+        double u_t = kP * error + kD * derivative;
 
         double angle = Math.atan2(spX, spY);
         double strafe = u_t*Math.sin(angle);
         double forward = u_t*Math.cos(angle);
 
-        return DriveSubsystem.INSTANCE.driveRobotCentric(strafe, forward, h);
+        runtime.reset();
+
+        Command driveCommand = DriveSubsystem.INSTANCE.driveRobotCentric(strafe, forward, h);
+        previousError[3] = previousError[2];
+        previousError[2] = previousError[1];
+        previousError[1] = previousError[0];
+        previousError[0] = error;
+        telemetry.addData("error:", error);
+        return driveCommand;
 
     }
     private Command autoRoutine() {
