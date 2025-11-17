@@ -23,10 +23,11 @@ public class DriveSubsystem implements Subsystem {
 
     private MotorGroup allWheels = new MotorGroup(frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor);
 
+    /*
     private ControlSystem driveControlSystem = ControlSystem.builder()
             .posPid(0,0,0) // figure out what this is
-            .build();
-
+            .build(); //why is this here this shouldn't. be here. it should be in auto.
+    */
     @Override
     public void periodic() {
 

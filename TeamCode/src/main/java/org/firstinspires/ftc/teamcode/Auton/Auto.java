@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.LocalizationSubsystem;
 
+import dev.nextftc.control.ControlSystem;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.CommandManager;
 import dev.nextftc.core.commands.delays.Delay;
@@ -38,7 +39,6 @@ public class Auto extends NextFTCOpMode {
 
     }
 
-    public double[] previousError = {-1000000, -1000000, -1000000, 1000000};
     public Command driveToPosRoboCentric(double spX, double spY, double h) {
 
         double posX = LocalizationSubsystem.INSTANCE.getX();
@@ -50,11 +50,7 @@ public class Auto extends NextFTCOpMode {
         double kP = 0.01;
         double kD = 0.001;
 
-        if (previousError[3] == -100000000) {
-            for (int i = 0; i < 4; i++){
-                previousError[i] = error;
-            }
-        }
+        double[] previousError = new double[3]; //make work later
 
         ElapsedTime runtime = new ElapsedTime(0);
         double deltaTime = runtime.seconds();
