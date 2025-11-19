@@ -46,33 +46,31 @@ public class Auto extends NextFTCOpMode {
 
         double error = Math.sqrt((spX - posX)*(spX - posX) + (spY - posY)*(spY - posY)); //get distance from target point
 
-        //tune these when robot exist
+        /*
         double kP = 0.01;
         double kD = 0.001;
 
-        double[] previousError = new double[3]; //make work later
+        double[] previousError = new double[3];
 
         ElapsedTime runtime = new ElapsedTime(0);
         double deltaTime = runtime.seconds();
 
         double derivative = (-error+8*previousError[0]-8*error*previousError[1]+previousError[2])/12*deltaTime;
 
-
         double u_t = kP * error + kD * derivative;
+         */
+
+        ControlSystem robotCentricControlSystem = ControlSystem.builder()
+            .posPid(0.01, 1, 0.001)
+            .build();
+
+        double u_t = robotCentricControlSystem.calculate();
 
         double angle = Math.atan2(spX, spY);
         double strafe = u_t*Math.sin(angle);
         double forward = u_t*Math.cos(angle);
 
-        runtime.reset();
-
-        Command driveCommand = DriveSubsystem.INSTANCE.driveRobotCentric(strafe, forward, h);
-        previousError[3] = previousError[2];
-        previousError[2] = previousError[1];
-        previousError[1] = previousError[0];
-        previousError[0] = error;
-        telemetry.addData("error:", error);
-        return driveCommand;
+        return DriveSubsystem.INSTANCE.driveRobotCentric(strafe, forward, h);
 
     }
     private Command autoRoutine() {
