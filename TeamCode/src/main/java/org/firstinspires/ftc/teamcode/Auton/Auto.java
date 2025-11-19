@@ -47,6 +47,7 @@ public class Auto extends NextFTCOpMode {
         double error = Math.sqrt((spX - posX)*(spX - posX) + (spY - posY)*(spY - posY)); //get distance from target point
 
         /*
+        //i tried to make a pid controller but nextftc already has one --madison
         double kP = 0.01;
         double kD = 0.001;
 
@@ -64,7 +65,7 @@ public class Auto extends NextFTCOpMode {
             .posPid(0.01, 1, 0.001)
             .build();
 
-        double u_t = robotCentricControlSystem.calculate();
+        double u_t = robotCentricControlSystem.calculate();//probably not done
 
         double angle = Math.atan2(spX, spY);
         double strafe = u_t*Math.sin(angle);
