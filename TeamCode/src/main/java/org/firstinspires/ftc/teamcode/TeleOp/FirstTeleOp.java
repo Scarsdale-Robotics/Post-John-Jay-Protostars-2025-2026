@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 
 import dev.nextftc.core.commands.Command;
@@ -12,8 +14,9 @@ import dev.nextftc.hardware.impl.Direction;
 import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
 
-public class TeleOp extends NextFTCOpMode {
-    public TeleOp() {
+@TeleOp(name="TeleOp Program") //this is apparently necessary
+public class FirstTeleOp extends NextFTCOpMode {
+    public FirstTeleOp() {
         addComponents(
                 new SubsystemComponent(ShooterSubsystem.INSTANCE)
         );
