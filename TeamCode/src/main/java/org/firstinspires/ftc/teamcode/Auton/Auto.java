@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.LocalizationSubsystem;
 
 import dev.nextftc.control.ControlSystem;
+import dev.nextftc.control.KineticState;
+import dev.nextftc.control.feedback.FeedbackElement;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.CommandManager;
 import dev.nextftc.core.commands.delays.Delay;
@@ -47,7 +49,6 @@ public class Auto extends NextFTCOpMode {
         double error = Math.sqrt((spX - posX)*(spX - posX) + (spY - posY)*(spY - posY)); //get distance from target point
 
         /*
-        //i tried to make a pid controller but nextftc already has one --madison
         double kP = 0.01;
         double kD = 0.001;
 
@@ -65,7 +66,7 @@ public class Auto extends NextFTCOpMode {
             .posPid(0.01, 1, 0.001)
             .build();
 
-        double u_t = robotCentricControlSystem.calculate();//probably not done
+        double u_t = robotCentricControlSystem.calculate(new KineticState(error));
 
         double angle = Math.atan2(spX, spY);
         double strafe = u_t*Math.sin(angle);
@@ -79,7 +80,7 @@ public class Auto extends NextFTCOpMode {
                 //an auto of all time
             LocalizationSubsystem.INSTANCE.setOdom(0,0,0),
             driveToPosRoboCentric(5,4,0),
-            DriveSubsystem.INSTANCE.brake,
+            //DriveSubsystem.INSTANCE.brake,
             ShooterSubsystem.INSTANCE.shooterOn(50),
             new Delay(1),
             ShooterSubsystem.INSTANCE.shooterOff
