@@ -62,23 +62,20 @@ public class DriveSubsystem implements Subsystem {
 
     /**
      *
-     * @param theta is the theta thing
-     * @param power
-     * @param turn turn
-     * @param heading help
+     * @param theta is the angle at which the robot should move relative to field
+     * @param power (in in/s) - constant force of speed
+     * @param turn is the speed at which a robot should (degrees per second)
+     * @param heading the robot's current angle, used to define true north relative to field
      * @return nothing (haskell hates this one weird trick)
      */
-    public void driveFieldCentric(double theta, double speed, double turn, double heading) {
-        Command autoControlled = new MecanumDriverControlled(
-                frontLeftMotor,
-                frontRightMotor,
-                backLeftMotor,
-                backRightMotor,
-                // takes in four values, uses setPower() to send to motors,
-                new FieldCentric(imu)
+    public void driveFieldCentric(double theta, double power, double turn, double heading) {
+                frontLeftMotor.setPower(0);
+                frontRightMotor.setPower(0);
+                backLeftMotor.setPower(0);
+                backRightMotor.setPower(0);
+                // takes in four values, uses setPower() to send to motors, (one forward value is defined)
+                //new FieldCentric(imu) <-- BOOOOOOO FOR CHEATERS
         );
-        autoControlled.schedule();
-
 
 
     };
