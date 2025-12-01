@@ -34,5 +34,4 @@ public class IntakeSubsystem implements Subsystem {
         }
         return new InstantCommand(() -> intakeServo.setPosition(intakePos));
     }
-
 }
