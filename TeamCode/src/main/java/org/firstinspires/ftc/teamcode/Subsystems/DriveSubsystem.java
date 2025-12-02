@@ -74,6 +74,7 @@ public class DriveSubsystem implements Subsystem {
                 backLeftMotor.setPower(0);
                 backRightMotor.setPower(0);
                 // takes in four values, uses setPower() to send to motors, (one forward value is defined)
+                // time is not a factor
                 //new FieldCentric(imu) <-- BOOOOOOO FOR CHEATERS
         );
 
