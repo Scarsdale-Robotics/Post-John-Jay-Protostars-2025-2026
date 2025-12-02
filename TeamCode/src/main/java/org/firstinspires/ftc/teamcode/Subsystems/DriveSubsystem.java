@@ -63,12 +63,12 @@ public class DriveSubsystem implements Subsystem {
     /**
      *
      * @param theta is the angle at which the robot should move relative to field
-     * @param power (in in/s) - constant force of speed
+     * @param forward (in in/s) - constant force of speed
      * @param turn is the speed at which a robot should (degrees per second)
      * @param heading the robot's current angle, used to define true north relative to field
      * @return nothing (haskell hates this one weird trick)
      */
-    public void driveFieldCentric(double theta, double power, double turn, double heading) {
+    public void driveFieldCentric(double theta, double forward, double turn, double heading) {
                 frontLeftMotor.setPower(0);
                 frontRightMotor.setPower(0);
                 backLeftMotor.setPower(0);
@@ -79,12 +79,12 @@ public class DriveSubsystem implements Subsystem {
 
 
     };
-
-    public void driveRobotCentric(double x, double y, double h) {
-            frontLeftMotor.setPower(y + x + h);
-            frontRightMotor.setPower(y - x - h);
-            backLeftMotor.setPower(y - x + h);
-            backRightMotor.setPower(y + x - h);
+    // x = forward ; y = strafe ; h = turn
+    public void driveRobotCentric(double forward, double strafe, double turn) {
+            frontLeftMotor.setPower(strafe + forward + turn);
+            frontRightMotor.setPower(strafe - forward - turn);
+            backLeftMotor.setPower(strafe - forward + turn);
+            backRightMotor.setPower(strafe + forward - turn);
         };
     }
 
