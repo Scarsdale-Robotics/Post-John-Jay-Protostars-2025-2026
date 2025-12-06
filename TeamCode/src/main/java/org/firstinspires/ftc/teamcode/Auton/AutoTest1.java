@@ -26,13 +26,13 @@ import dev.nextftc.hardware.impl.Direction;
 import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
 
-@Autonomous(name="Autonomous Program")
-public class Auto extends NextFTCOpMode {
+@Autonomous(name="shooter test")
+public class AutoTest1 extends NextFTCOpMode {
     double forwardPower = 0;
     double strafePower = 0;
     double turnPower = 0;
     public Drivetrain Auto;
-    public Auto() {
+    public AutoTest1() {
         addComponents(
                 new SubsystemComponent(ShooterSubsystem.INSTANCE),
                 new SubsystemComponent(LocalizationSubsystem.INSTANCE),
@@ -63,8 +63,8 @@ public class Auto extends NextFTCOpMode {
          */
 
         ControlSystem robotCentricControlSystem = ControlSystem.builder()
-            .posPid(0.01, 1, 0.001)
-            .build();
+                .posPid(0.01, 1, 0.001)
+                .build();
 
         double u_t = robotCentricControlSystem.calculate(new KineticState(error));//probably doesnt work
 
@@ -77,13 +77,11 @@ public class Auto extends NextFTCOpMode {
     }
     private Command autoRoutine() {
         return new SequentialGroup(
-                //an auto of all time
-            LocalizationSubsystem.INSTANCE.setOdom(0,0,0),
-            driveToPosRoboCentric(2,2,0),
-            //DriveSubsystem.INSTANCE.brake,
-            ShooterSubsystem.INSTANCE.shooterOn(0.85),
-            new Delay(1),
-            ShooterSubsystem.INSTANCE.shooterOff
+                LocalizationSubsystem.INSTANCE.setOdom(0,0,0),
+                //intake stuff maybe
+                ShooterSubsystem.INSTANCE.shooterOn(0.85),
+                new Delay(5),
+                ShooterSubsystem.INSTANCE.shooterOff
         );
     }
 
