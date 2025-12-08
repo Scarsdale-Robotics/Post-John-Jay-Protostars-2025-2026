@@ -12,8 +12,8 @@ import dev.nextftc.hardware.impl.Direction;
 import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
 
-public class TeleOp extends NextFTCOpMode {
-    public TeleOp() {
+public class FirstTeleOp extends NextFTCOpMode {
+    public FirstTeleOp() {
         addComponents(
                 new SubsystemComponent(ShooterSubsystem.INSTANCE)
         );
@@ -38,6 +38,10 @@ public class TeleOp extends NextFTCOpMode {
         );
 
         driverControl.schedule();
+
+        //intake
+
+        //shooting
 
     }
 

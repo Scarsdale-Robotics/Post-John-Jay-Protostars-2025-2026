@@ -1,21 +1,30 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.groups.ParallelGroup;
+import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
+import dev.nextftc.ftc.components.BulkReadComponent;
 import dev.nextftc.hardware.driving.FieldCentric;
 import dev.nextftc.hardware.driving.MecanumDriverControlled;
 import dev.nextftc.hardware.impl.Direction;
 import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
-
+@TeleOp(name="Cici TeleOp")
 public class CiciTeleop extends NextFTCOpMode {
     public CiciTeleop() {
         addComponents(
-                new SubsystemComponent(ShooterSubsystem.INSTANCE)
+                new SubsystemComponent(ShooterSubsystem.INSTANCE),
+                BulkReadComponent.INSTANCE,
+                BindingsComponent.INSTANCE
+
         );
     }
     // MecanumDriverControlled command
@@ -46,9 +55,12 @@ public class CiciTeleop extends NextFTCOpMode {
         // -before it transitions to the "waiting for start"
         // Gamepads.gamepad2().dpadUp().whenBecomesTrue()
         // localization: odometry, matrix of
-        //Gamepads.gamepad2().dpadUp().whenBecomesTrue();
+
         //Gamepads.gamepad2().leftBumper().whenBecomesTrue(
-                
+        //        new ParallelGroup(
+        //            ShooterSubsystem.INSTANCE.shooterOn(9)
+        //      ));
+
 
     }
 }

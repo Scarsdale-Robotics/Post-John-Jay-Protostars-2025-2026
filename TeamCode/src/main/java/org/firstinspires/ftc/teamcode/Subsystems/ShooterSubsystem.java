@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.MotorGroup;
 import dev.nextftc.hardware.controllable.RunToPosition;
@@ -18,28 +19,22 @@ public class ShooterSubsystem implements Subsystem {
     private MotorEx motor2 = new MotorEx("flywheelMotor_2");
     private MotorGroup shooterGroup = new MotorGroup(motor1, motor2);
 
-        private ControlSystem controlSystem = ControlSystem.builder()
-                .posPid(0,0,0)
-                .build();
+    private ControlSystem controlSystem = ControlSystem.builder()
+            .posPid(0,0,0)
+            .build();
 
         @Override
         public void periodic() {
             shooterGroup.setPower(controlSystem.calculate(motor1.getState()));
         }
 
-        public class shooterOn extends Command{
-            double power;
-            public shooterOn(double powerParameter){  //If parameters required, create a subclass to the method
-                this.power = powerParameter;
-            }
-            public void start(){ //start method
-                shooterGroup.setPower(power);//.requires(this);
-            }
-            @Override
-            public boolean isDone() {
-                return true; //close the command after setting the power instantly when call the command
-            }
+        public Command shooterOn(double shooterPower){
+
+            return new InstantCommand(() -> {//If parameters required, create a subclass to the method
+                shooterGroup.setPower(shooterPower);
+            });
         }
+
 
         //single Command needed if no parameter input
         public Command shooterOff = new SetPower(shooterGroup, 0).requires(this);
