@@ -41,6 +41,7 @@ public class Auto extends NextFTCOpMode {
 
     }
 
+    double[] previousError = new double[3];
     public Command driveToPosRoboCentric(double spX, double spY, double h) {
 
         double posX = LocalizationSubsystem.INSTANCE.getX();
