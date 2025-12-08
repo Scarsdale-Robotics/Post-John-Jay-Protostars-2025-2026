@@ -48,7 +48,7 @@ public class Auto extends NextFTCOpMode {
 
         double error = Math.sqrt((spX - posX)*(spX - posX) + (spY - posY)*(spY - posY)); //get distance from target point
 
-        /*
+
         double kP = 0.01;
         double kD = 0.001;
 
@@ -60,14 +60,13 @@ public class Auto extends NextFTCOpMode {
         double derivative = (-error+8*previousError[0]-8*error*previousError[1]+previousError[2])/12*deltaTime;
 
         double u_t = kP * error + kD * derivative;
-         */
-
+        /*
         ControlSystem robotCentricControlSystem = ControlSystem.builder()
             .posPid(0.01, 1, 0.001)
             .build();
 
         double u_t = robotCentricControlSystem.calculate(new KineticState(error));//probably doesnt work
-
+        */
         double angle = Math.atan2(spX, spY);
         double strafe = u_t*Math.sin(angle);
         double forward = u_t*Math.cos(angle);
