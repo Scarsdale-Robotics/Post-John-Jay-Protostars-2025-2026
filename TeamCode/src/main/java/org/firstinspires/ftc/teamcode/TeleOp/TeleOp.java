@@ -13,33 +13,5 @@ import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
 
 public class TeleOp extends NextFTCOpMode {
-    public TeleOp() {
-        addComponents(
-                new SubsystemComponent(ShooterSubsystem.INSTANCE)
-        );
-    }
-    private final MotorEx frontLeftMotor = new MotorEx("frontLeft").reversed();
-    private final MotorEx frontRightMotor = new MotorEx("frontRight");
-    private final MotorEx backLeftMotor = new MotorEx("backLeft").reversed();
-    private final MotorEx backRightMotor = new MotorEx("backRight");
-    private final IMUEx imu = new IMUEx("imu", Direction.UP, Direction.FORWARD).zeroed();
-
-    @Override
-    public void onStartButtonPressed() {
-        Command driverControl = new MecanumDriverControlled(
-                frontLeftMotor,
-                frontRightMotor,
-                backLeftMotor,
-                backRightMotor,
-                Gamepads.gamepad1().leftStickY().negate(),
-                Gamepads.gamepad1().leftStickX(),
-                Gamepads.gamepad1().rightStickX(),
-                new FieldCentric(imu)
-        );
-
-        driverControl.schedule();
-
-    }
-
 
 }
