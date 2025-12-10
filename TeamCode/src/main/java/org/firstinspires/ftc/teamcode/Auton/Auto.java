@@ -28,10 +28,7 @@ import dev.nextftc.hardware.impl.MotorEx;
 
 @Autonomous(name="Autonomous Program")
 public class Auto extends NextFTCOpMode {
-    double forwardPower = 0;
-    double strafePower = 0;
-    double turnPower = 0;
-    public Drivetrain Auto;
+
     public Auto() {
         addComponents(
                 new SubsystemComponent(ShooterSubsystem.INSTANCE),
@@ -41,7 +38,7 @@ public class Auto extends NextFTCOpMode {
 
     }
 
-    double[] previousError = new double[3];
+    static double[] previousError = new double[3];
     public Command driveToPosRoboCentric(double spX, double spY, double h) {
 
         double posX = LocalizationSubsystem.INSTANCE.getX();
@@ -53,7 +50,12 @@ public class Auto extends NextFTCOpMode {
         double kP = 0.01;
         double kD = 0.001;
 
-        double[] previousError = new double[3];
+        for (int i = 0; i < 4; i++)
+            if (i != 0) {
+                previousError[i] = previousError[i - 1];
+            } else {
+                previousError[i] = error;
+            }
 
         ElapsedTime runtime = new ElapsedTime(0);
         double deltaTime = runtime.seconds();
@@ -61,13 +63,7 @@ public class Auto extends NextFTCOpMode {
         double derivative = (-error+8*previousError[0]-8*error*previousError[1]+previousError[2])/12*deltaTime;
 
         double u_t = kP * error + kD * derivative;
-        /*
-        ControlSystem robotCentricControlSystem = ControlSystem.builder()
-            .posPid(0.01, 1, 0.001)
-            .build();
 
-        double u_t = robotCentricControlSystem.calculate(new KineticState(error));//probably doesnt work
-        */
         double angle = Math.atan2(spX, spY);
         double strafe = u_t*Math.sin(angle);
         double forward = u_t*Math.cos(angle);
