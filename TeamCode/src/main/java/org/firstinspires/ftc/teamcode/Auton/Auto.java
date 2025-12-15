@@ -47,7 +47,7 @@ public class Auto extends NextFTCOpMode {
         );
     }
 
-    ControlSystem controlSystem = ControlSystem.builder().pospid(0, 1, 0).build();
+   // ControlSystem controlSystem = ControlSystem.builder().pospid(0, 1, 0).build();
 
     /* @Override
     public boolean equals(@Nullable Object obj) {
@@ -71,4 +71,4 @@ public class Auto extends NextFTCOpMode {
         DriveSubsystem.driveRobotCentric(0, 0, 0); */
     }
 
-}
+
