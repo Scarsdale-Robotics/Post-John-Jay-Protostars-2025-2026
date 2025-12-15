@@ -13,28 +13,39 @@ import dev.nextftc.hardware.powerable.SetPower;
 
 public class ShooterSubsystem implements Subsystem {
     public static double shooterPower = 0;
+
+
     public static final ShooterSubsystem INSTANCE = new ShooterSubsystem(shooterPower);
-    private ShooterSubsystem(double shooterPower) { }
+
+    private ShooterSubsystem(double shooterPower) {
+
+    }
     private MotorEx motor1 = new MotorEx("flywheelMotor_1").reversed();
     private MotorEx motor2 = new MotorEx("flywheelMotor_2");
-    private MotorGroup shooterGroup = new MotorGroup(motor1, motor2);
+    private MotorGroup flywheel = new MotorGroup(motor1, motor2);
 
-        private ControlSystem controlSystem = ControlSystem.builder()
-                .posPid(0,0,0)
-                .build();
+    private ControlSystem pos_ctrl = ControlSystem.builder()
+            .posPid(0,0,0)
+            .build();
+    private ControlSystem vel_ctrl = ControlSystem.builder()
+            .velPid(0,0,0)
+            .build();
 
-        @Override
-        public void periodic() {
-            shooterGroup.setPower(controlSystem.calculate(motor1.getState()));
-        }
 
-        public Command shooterOn(double shooterPower){
-            return new InstantCommand(() -> {
-                shooterGroup.setPower(shooterPower);
-            });
-        }
+    @Override
+    public void periodic() {
+        flywheel.setPower(pos_ctrl.calculate(motor1.getState()));
+    }
+    /// speed to set motor to, returns error
+    public Command shooterOn(double speed){
+        return new InstantCommand(() -> {
+            flywheel.setPower(vel_ctrl.calculate(flywheel.getVelocity()));
 
-        //single Command needed if no parameter input
-        public Command shooterOff = new SetPower(shooterGroup, 0).requires(this);
+
+        });
+    }
+
+    //single Command needed if no parameter input
+    public Command shooterOff = new SetPower(flywheel, 0).requires(this);
 
 }
