@@ -15,7 +15,7 @@ public class ShooterSubsystem implements Subsystem {
     public static double shooterPower = 0;
     public static final ShooterSubsystem INSTANCE = new ShooterSubsystem(shooterPower);
     private ShooterSubsystem(double shooterPower) { }
-    private MotorEx motor1 = new MotorEx("flywheelMotor_1");
+    private MotorEx motor1 = new MotorEx("flywheelMotor_1").reversed();
     private MotorEx motor2 = new MotorEx("flywheelMotor_2");
     private MotorGroup shooterGroup = new MotorGroup(motor1, motor2);
 

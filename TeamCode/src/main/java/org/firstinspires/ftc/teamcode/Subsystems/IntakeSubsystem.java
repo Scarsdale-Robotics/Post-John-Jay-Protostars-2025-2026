@@ -12,7 +12,7 @@ import dev.nextftc.hardware.powerable.SetPower;
 public class IntakeSubsystem implements Subsystem {
     public static final IntakeSubsystem INSTANCE = new IntakeSubsystem();
     private IntakeSubsystem() {}
-    // private final MotorEx intake2 = new MotorEx("intake2"); This motor just doesn't exist I guess
+    // private final MotorEx intake2 = new MotorEx("intake2"); I think this motor doesn't exist
     // private final MotorGroup outerIntake = new MotorGroup(intake1, intake2);
     private final MotorEx outerIntake = new MotorEx("outer_intake");
     private final MotorEx innerIntake = new MotorEx("inner_intake");
