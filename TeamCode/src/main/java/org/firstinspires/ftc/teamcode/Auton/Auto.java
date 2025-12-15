@@ -26,7 +26,7 @@ import dev.nextftc.hardware.impl.Direction;
 import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
 
-@Autonomous(name="Autonomous Program")
+//@Autonomous(name="Autonomous Program") //Do not uncomment this until auto is safe
 public class Auto extends NextFTCOpMode {
 
     public Auto() {

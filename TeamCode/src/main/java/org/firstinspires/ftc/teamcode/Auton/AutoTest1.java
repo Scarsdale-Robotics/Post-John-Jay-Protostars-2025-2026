@@ -1,24 +1,34 @@
 package org.firstinspires.ftc.teamcode.Auton;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.LocalizationSubsystem;
 
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.control.KineticState;
+import dev.nextftc.control.feedback.FeedbackElement;
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.CommandManager;
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.SubsystemComponent;
+import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 import dev.nextftc.hardware.driving.Drivetrain;
+import dev.nextftc.hardware.driving.FieldCentric;
+import dev.nextftc.hardware.driving.MecanumDriverControlled;
+import dev.nextftc.hardware.impl.Direction;
+import dev.nextftc.hardware.impl.IMUEx;
+import dev.nextftc.hardware.impl.MotorEx;
 
+@Autonomous(name="Autonomous Test")
 public class AutoTest1 extends NextFTCOpMode {
-    double forwardPower = 0;
-    double strafePower = 0;
-    double turnPower = 0;
-    public Drivetrain Auto;
+
     public AutoTest1() {
         addComponents(
                 new SubsystemComponent(ShooterSubsystem.INSTANCE),
@@ -28,6 +38,7 @@ public class AutoTest1 extends NextFTCOpMode {
 
     }
 
+    static double[] previousError = new double[3];
     public Command driveToPosRoboCentric(double spX, double spY, double h) {
 
         double posX = LocalizationSubsystem.INSTANCE.getX();
@@ -35,11 +46,16 @@ public class AutoTest1 extends NextFTCOpMode {
 
         double error = Math.sqrt((spX - posX)*(spX - posX) + (spY - posY)*(spY - posY)); //get distance from target point
 
-        /*
+
         double kP = 0.01;
         double kD = 0.001;
 
-        double[] previousError = new double[3];
+        for (int i = 0; i < 4; i++)
+            if (i != 0) {
+                previousError[i] = previousError[i - 1];
+            } else {
+                previousError[i] = error;
+            }
 
         ElapsedTime runtime = new ElapsedTime(0);
         double deltaTime = runtime.seconds();
@@ -47,13 +63,6 @@ public class AutoTest1 extends NextFTCOpMode {
         double derivative = (-error+8*previousError[0]-8*error*previousError[1]+previousError[2])/12*deltaTime;
 
         double u_t = kP * error + kD * derivative;
-         */
-
-        ControlSystem robotCentricControlSystem = ControlSystem.builder()
-                .posPid(0.01, 1, 0.001)
-                .build();
-
-        double u_t = robotCentricControlSystem.calculate(new KineticState(error));//probably doesnt work
 
         double angle = Math.atan2(spX, spY);
         double strafe = u_t*Math.sin(angle);
@@ -65,10 +74,7 @@ public class AutoTest1 extends NextFTCOpMode {
     private Command autoRoutine() {
         return new SequentialGroup(
                 LocalizationSubsystem.INSTANCE.setOdom(0,0,0),
-                //intake stuff maybe
-                ShooterSubsystem.INSTANCE.shooterOn(0.85),
-                new Delay(5),
-                ShooterSubsystem.INSTANCE.shooterOff
+                driveToPosRoboCentric(0,2,0)
         );
     }
 
