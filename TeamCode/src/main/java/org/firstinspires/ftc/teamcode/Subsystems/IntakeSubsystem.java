@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.conditionals.IfElseCommand;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.MotorGroup;
@@ -24,13 +25,12 @@ public class IntakeSubsystem implements Subsystem {
     public Command outerPower(double power) {
         return new InstantCommand(() -> outerIntake.setPower(power));
     }
-    private int intakePos = 0;
+
     public Command swapIntakeServo() {
-        if (intakePos == 0) {
-            intakePos = 1;
-        } else {
-            intakePos = 0;
-        }
-        return new InstantCommand(() -> intakeServo.setPosition(intakePos));
+        return new IfElseCommand(
+                () -> intakeServo.getPosition() == 0,
+                new InstantCommand(() -> intakeServo.setPosition(0.31)),
+                new InstantCommand(() -> intakeServo.setPosition(0))
+        );
     }
 }
