@@ -22,12 +22,15 @@ public class CiciTeleop extends NextFTCOpMode {
 
     public CiciTeleop() {
         addComponents(
+                new SubsystemComponent(IntakeSubsystem.INSTANCE),
+                BulkReadComponent.INSTANCE,
+                BindingsComponent.INSTANCE
         );
     }
 
     // MecanumDriverControlled command
     private final MotorEx frontLeftMotor = new MotorEx("frontLeft").reversed();
-    private final MotorEx frontRightMotor = new MotorEx("frontRight");
+    private final MotorEx frontRightMotor = new MotorEx("frontRight").reversed();
     private final MotorEx backLeftMotor = new MotorEx("backLeft").reversed();
     private final MotorEx backRightMotor = new MotorEx("backRight");
     private final IMUEx imu = new IMUEx("imu", Direction.UP, Direction.FORWARD).zeroed();
@@ -44,11 +47,14 @@ public class CiciTeleop extends NextFTCOpMode {
                 Gamepads.gamepad1().rightStickX(),
                 new FieldCentric(imu)
         );
+        Gamepads.gamepad1().dpadUp()
+                .whenBecomesTrue(IntakeSubsystem.INSTANCE.swapIntakeServo());
 
         driverControl.schedule();
 
-        Gamepads.gamepad1().dpadUp()
-                .whenBecomesTrue(IntakeSubsystem.INSTANCE.swapIntakeServo());
+
+
+
 
         //if (ShooterSubsystem.INSTANCE.shooterPower == 0)
             //Gamepads.gamepad1().dpadDown().whenBecomesTrue(ShooterSubsystem.INSTANCE.shooterOn());
@@ -60,11 +66,7 @@ public class CiciTeleop extends NextFTCOpMode {
 
 
 
-
-
-
-
-
+    //----------
         // Gamepad bindings
         // onStartButtonPressed() ->
         // onInit() -> called when OpMode is initialized but-

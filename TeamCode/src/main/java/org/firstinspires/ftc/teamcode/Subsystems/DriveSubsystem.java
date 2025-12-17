@@ -13,9 +13,9 @@ public class DriveSubsystem implements Subsystem {
 
     private DriveSubsystem() { }
 
-    private MotorEx frontLeftMotor = new MotorEx("frontLeftMotor");
-    private MotorEx frontRightMotor = new MotorEx("frontRightMotor");
-    private MotorEx backLeftMotor = new MotorEx("backLeftMotor");
+    private MotorEx frontLeftMotor = new MotorEx("frontLeftMotor").reversed();
+    private MotorEx frontRightMotor = new MotorEx("frontRightMotor").reversed();
+    private MotorEx backLeftMotor = new MotorEx("backLeftMotor").reversed();
     private MotorEx backRightMotor = new MotorEx("backRightMotor");
 
     private MotorGroup allWheels = new MotorGroup(frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor);
