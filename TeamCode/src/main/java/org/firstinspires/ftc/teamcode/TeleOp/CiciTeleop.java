@@ -47,10 +47,13 @@ public class CiciTeleop extends NextFTCOpMode {
                 Gamepads.gamepad1().rightStickX(),
                 new FieldCentric(imu)
         );
-        Gamepads.gamepad1().dpadUp()
-                .whenBecomesTrue(IntakeSubsystem.INSTANCE.swapIntakeServo());
+
+        Gamepads.gamepad1().dpadUp().whenBecomesTrue(IntakeSubsystem.INSTANCE.high);
+        Gamepads.gamepad1().dpadDown().whenBecomesTrue(IntakeSubsystem.INSTANCE.low);
+
 
         driverControl.schedule();
+
 
 
 
