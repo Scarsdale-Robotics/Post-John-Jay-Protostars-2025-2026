@@ -17,10 +17,10 @@ public class IntakeSubsystem implements Subsystem {
     private final ServoEx intakeServo = new ServoEx("intake_servo");
 
     public Command innerPower(double power) {
-        return new InstantCommand(() -> innerIntake.setPower(power));
+        return new InstantCommand(() -> intake1.setPower(power));
     }
     public Command outerPower(double power) {
-        return new InstantCommand(() -> outerIntake.setPower(power));
+        return new InstantCommand(() -> intake2.setPower(power));
     }
     private int intakePos = 0;
     public Command swapIntakeServo() {

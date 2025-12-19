@@ -16,7 +16,7 @@ public class DriveSubsystem implements Subsystem {
     private DriveSubsystem() { }
 
       private final MotorEx frontLeftMotor = new MotorEx("frontLeft").reversed();
-      private final MotorEx frontRightMotor = new MotorEx("frontRight");
+      private final MotorEx frontRightMotor = new MotorEx("frontRight").reversed();
       private final MotorEx backLeftMotor = new MotorEx("backLeft").reversed();
       private final MotorEx backRightMotor = new MotorEx("backRight");
       private final IMUEx imu = new IMUEx("imu", Direction.UP, Direction.FORWARD).zeroed();
