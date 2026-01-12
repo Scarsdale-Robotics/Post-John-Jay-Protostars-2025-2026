@@ -8,13 +8,16 @@ import dev.nextftc.hardware.powerable.SetPower;
 
 public class HoodSubsystem { // Not finished lots of stuff
     //public static final HoodSubsystem INSTANCE = new HoodSubsystem();
-    private HoodSubsystem() { }
     private ServoEx servo = new ServoEx("hoodServo");
 
-    public Command turn(double direction){
-        return new InstantCommand(() -> {
-            servo.setPosition(direction);
-        });
+    private HoodSubsystem() {
+        servo.setPosition(0);
+    }
+
+    public Command turn(double direction) {
+        return new InstantCommand(() ->
+            servo.setPosition(direction)
+        );
     }
 
     //single Command needed if no parameter input
