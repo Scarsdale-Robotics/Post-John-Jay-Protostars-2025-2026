@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Subsystems.MagSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.PusherSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 
 import dev.nextftc.core.commands.Command;
@@ -43,6 +45,10 @@ public class FirstTeleOp extends NextFTCOpMode {
                 Gamepads.gamepad1().rightStickX(),
                 new FieldCentric(imu)
         );
+        Gamepads.gamepad1().dpadRight().whenBecomesTrue(MagSubsystem.INSTANCE.magPower(0.1));
+        Gamepads.gamepad1().dpadLeft().whenBecomesTrue(MagSubsystem.INSTANCE.magPower(0));
+        Gamepads.gamepad1().circle().whenBecomesTrue(PusherSubsystem.INSTANCE.pusherUp);
+        Gamepads.gamepad1().square().whenBecomesTrue(PusherSubsystem.INSTANCE.pusherDown);
 
         driverControl.schedule();
 
