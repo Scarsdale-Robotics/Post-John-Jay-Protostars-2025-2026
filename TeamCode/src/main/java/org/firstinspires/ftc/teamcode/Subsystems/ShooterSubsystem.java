@@ -7,19 +7,35 @@ import dev.nextftc.hardware.impl.MotorEx;
 import dev.nextftc.hardware.powerable.SetPower;
 
 public class ShooterSubsystem implements Subsystem {
-    public static double shooterPower = 0;
-    public static final ShooterSubsystem INSTANCE = new ShooterSubsystem(shooterPower);
-    private ShooterSubsystem(double shooterPower) { }
+    public double target = 0;
+    private double integral = 0, prevError = 0;
+    private long prevTime = 00;
+
+    public static final ShooterSubsystem INSTANCE = new ShooterSubsystem();
+    private ShooterSubsystem() { }
     private MotorEx motor = new MotorEx("shooterMotor_1");
 
-
-        @Override
-        public void periodic() { // put pid here
+        public double getFlywheelError(){
+            return target-motor.getVelocity();
         }
 
-        public Command shooterSetTarget(double shooterPower){
+        public double P, I, D;
+        @Override
+        public void periodic() { // put pid here
+            double rate = (getFlywheelError()-prevError)/(double)(System.nanoTime()-prevTime)*1000000.;
+            integral += getFlywheelError();
+
+            motor.setPower(P* getFlywheelError()+
+                            I*integral+
+                            D*rate);
+
+            prevError = getFlywheelError();
+            prevTime = System.nanoTime();
+        }
+
+        public Command setFlywheelVel(double targetVelocity){
             return new InstantCommand(() -> {
-                motor.setPower(shooterPower);
+                target = targetVelocity;
             });
         }
 

@@ -71,7 +71,7 @@ public class Auto extends NextFTCOpMode {
             LocalizationSubsystem.INSTANCE.setOdom(0,0,0),
             driveToPosRoboCentric(5,4,0),
             //DriveSubsystem.INSTANCE.brake,
-            ShooterSubsystem.INSTANCE.shooterSetTarget(50),
+            ShooterSubsystem.INSTANCE.setFlywheelVel(50),
             new Delay(1),
             ShooterSubsystem.INSTANCE.shooterOff
         );
